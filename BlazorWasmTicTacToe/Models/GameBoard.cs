@@ -24,7 +24,7 @@ namespace BlazorWasmTicTacToe.Models
         {
             Board = new GamePiece[3, 3];
 
-            //Populate the Board with blank pieces
+            //初始化棋盘，将棋子转换为空白
             for (int i = 0; i <= 2; i++)
             {
                 for (int j = 0; j <= 2; j++)
@@ -37,14 +37,14 @@ namespace BlazorWasmTicTacToe.Models
         //Given the coordinates of the space that was clicked...
         public void PieceClicked(int x, int y)
         {
-            //If the game is complete, do nothing
+            //如果棋局结束，则不能落子
             if (GameComplete) { return; }
 
-            //If the space is not already claimed...
+            //判断落子区域是否空白，空白才能落子
             GamePiece clickedSpace = Board[x, y];
             if (clickedSpace.Style == PieceStyle.Blank)
             {
-                //Set the marker to the current turn marker (X or O), then make it the other player's turn
+                //将落子区域绘制为 X 或者 O
                 clickedSpace.Style = CurrentTurn;
                 SwitchTurns();
             }
@@ -52,8 +52,7 @@ namespace BlazorWasmTicTacToe.Models
 
         private void SwitchTurns()
         {
-            //This is equivalent to: if currently X's turn, 
-            // make it O's turn, and vice-versa
+            //判断轮到哪方落子
             CurrentTurn = CurrentTurn == PieceStyle.X ? PieceStyle.O : PieceStyle.X;
         }
 
@@ -61,7 +60,7 @@ namespace BlazorWasmTicTacToe.Models
         {
             int pieceBlankCount = 0;
 
-            //Count all the blank spaces. If the count is 0, this is a draw.
+            //计算空白区域，如果空白区域为0，则表明棋局结束
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
